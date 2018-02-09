@@ -1,13 +1,10 @@
-import { DangerZone } from 'expo';
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
+import HeaderRightButton from '../components/HeaderRightButton';
 import CreditScreen from '../screens/CreditScreen';
 import Theme from '../styles/Theme';
-
-const { GestureHandler } = DangerZone;
-const { BorderlessButton } = GestureHandler;
 
 export default class CreditNavigatorContainer extends React.Component {
   render() {
@@ -21,13 +18,11 @@ const CreditNavigator = StackNavigator(
       screen: CreditScreen,
       navigationOptions: ({ screenProps }) => ({
         headerRight: (
-          <BorderlessButton
+          <HeaderRightButton
             onPress={() => screenProps.parentNavigation.goBack()}
-            style={styles.doneButton}>
-            <Text numberOfLines={1} style={styles.doneButtonText}>
-              Done
-            </Text>
-          </BorderlessButton>
+            textStyle={styles.doneButtonText}>
+            Done
+          </HeaderRightButton>
         ),
       }),
     },
@@ -42,16 +37,7 @@ const CreditNavigator = StackNavigator(
 );
 
 const styles = StyleSheet.create({
-  doneButton: {
-    paddingLeft: 10,
-    paddingRight: 16,
-    paddingVertical: 12,
-  },
   doneButtonText: {
-    color: Theme.lightTextColor,
-    fontSize: 17,
     fontWeight: 'bold',
   },
 });
-
-// export default CreditNavigator;
