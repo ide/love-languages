@@ -1,0 +1,28 @@
+{
+  "name": "love-languages",
+  "version": "0.1.0",
+  "description": "Discover and share your love language with the people close to you in life.",
+  "author": "James Ide",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "eslintConfig": {
+    "extends": "universe/native"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "6.2.2",
+    "expo": "^25.0.0",
+    "invariant": "^2.2.2",
+    "lodash": "^4.17.5",
+    "prop-types": "^15.6.0",
+    "react": "16.2.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-navigation": "1.0.3",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-universe": "^1.0.6",
+    "prettier": "^1.9.2"
+  }
+}

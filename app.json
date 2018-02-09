@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Love Languages",
+    "description": "Find out your love language — the way you especially appreciate loved ones close to you in life.",
+    "slug": "love-languages",
+    "privacy": "public",
+    "sdkVersion": "25.0.0",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#9c27b0",
+    "icon": "./assets/icons/heart-app-icon.png",
+    "splash": {
+      "backgroundColor": "#9c27b0",
+      "image": "./assets/icons/heart-splash.png"
+    },
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}
