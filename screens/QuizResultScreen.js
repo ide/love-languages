@@ -82,14 +82,15 @@ class QuizResultScreen extends React.Component {
     let primaryLanguages = this._getPrimaryLanguages();
     invariant(primaryLanguages.length > 0, `There must be at least one primary language`);
 
+    let shareTitle = 'Find out your love language!';
     await Share.share(
       {
-        title: 'Find out your love language!',
+        title: shareTitle,
         message: Sharing.getShareMessage(primaryLanguages),
         url: Sharing.expoProjectUri,
       },
       {
-        dialogTitle: 'hi there!',
+        dialogTitle: shareTitle,
       }
     );
 
