@@ -1,11 +1,11 @@
 import { DangerZone } from 'expo';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 const { GestureHandler } = DangerZone;
-const { BorderlessButton, ScrollView } = GestureHandler;
+const { BorderlessButton } = GestureHandler;
 
 class QuizIntroScreen extends React.Component {
   static propTypes = {

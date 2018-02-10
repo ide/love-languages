@@ -1,14 +1,14 @@
 import { DangerZone } from 'expo';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Animated, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Animated, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import Actions from '../store/Actions';
 import Theme from '../styles/Theme';
 
 const { GestureHandler } = DangerZone;
-const { BaseButton, BorderlessButton, ScrollView } = GestureHandler;
+const { BaseButton, BorderlessButton } = GestureHandler;
 
 const AnimatedBaseButton = Animated.createAnimatedComponent(BaseButton);
 
@@ -29,7 +29,6 @@ class HomeScreen extends React.Component {
       <SafeAreaView style={styles.container}>
         <ScrollView
           alwaysBounceVertical={false}
-          waitFor={['home/start-button', 'home/credits-button']}
           contentContainerStyle={styles.contentContainer}
           style={styles.scrollContainer}>
           <Text style={styles.heading}>Love Languages</Text>
@@ -44,7 +43,7 @@ class HomeScreen extends React.Component {
               those close to you show they care.
             </Text>
             <AnimatedBaseButton
-              id="home/start-button"
+              disallowInterruption
               shouldActivateOnStart
               onActiveStateChange={this._handleButtonActiveStateChange}
               onPress={this._startQuiz}
@@ -53,7 +52,7 @@ class HomeScreen extends React.Component {
             </AnimatedBaseButton>
           </View>
           <BorderlessButton
-            id="home/credits-button"
+            disallowInterruption
             onPress={this._showCredits}
             style={styles.creditsButton}>
             <Text style={styles.creditsButtonText}>Credits and Acknowledgements</Text>

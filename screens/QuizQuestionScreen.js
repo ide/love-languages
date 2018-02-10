@@ -2,7 +2,7 @@ import { DangerZone } from 'expo';
 import invariant from 'invariant';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text, ViewPropTypes } from 'react-native';
+import { ScrollView, StyleSheet, Text, ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 
 import Quiz from '../quiz/Quiz';
@@ -10,7 +10,7 @@ import Actions from '../store/Actions';
 import Theme from '../styles/Theme';
 
 const { GestureHandler } = DangerZone;
-const { RectButton, ScrollView } = GestureHandler;
+const { RectButton } = GestureHandler;
 
 class QuizQuestionScreen extends React.Component {
   static propTypes = {
@@ -111,6 +111,7 @@ class QuizQuestionChoice extends React.PureComponent {
   render() {
     return (
       <RectButton
+        disallowInterruption
         underlayColor={this.props.selected ? Theme.lightTextColor : Theme.primaryColor}
         onPress={this.props.onSelect}
         style={[

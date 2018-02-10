@@ -75,12 +75,13 @@ class QuizResultScreen extends React.Component {
         </View>
         <View style={[styles.content, styles.buttons]}>
           <BorderlessButton
+            disallowInterruption
             onPress={this._shareQuizAsync}
             style={[styles.button, styles.spacedButton]}>
             <Text style={styles.buttonText}>Share Your Quiz</Text>
           </BorderlessButton>
 
-          <BorderlessButton onPress={this._restartAsync} style={styles.button}>
+          <BorderlessButton disallowInterruption onPress={this._restartAsync} style={styles.button}>
             <Text style={styles.buttonText}>Start Again</Text>
           </BorderlessButton>
         </View>
