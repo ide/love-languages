@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@expo/vector-icons@6.2.2", "@expo/vector-icons@^6.2.0":
+"@expo/vector-icons@^6.2.0":
   version "6.2.2"
   resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-6.2.2.tgz#441edb58a52c0f4e5b4aba1e6f8da1e87cea7e11"
   dependencies:
@@ -3598,7 +3598,7 @@ react-native-vector-icons@4.4.2:
     xmldoc "^0.4.0"
     yargs "^9.0.0"
 
-react-navigation@1.0.3:
+react-navigation@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.0.3.tgz#1687ea67a72a382633b01e7afda88582ebc3b5f9"
   dependencies:

@@ -9,7 +9,6 @@
     "extends": "universe/native"
   },
   "dependencies": {
-    "@expo/vector-icons": "6.2.2",
     "expo": "^25.0.0",
     "invariant": "^2.2.2",
     "lodash": "^4.17.5",
