@@ -46,7 +46,11 @@ export default class CreditScreen extends React.Component {
         <Text style={styles.text}>
           The love languages in this app come from the book{' '}
           <Text style={styles.bookTitle}>The 5 Love Languages</Text> by Gary Chapman. The quiz
-          questions in this app are from PDFs from 5LoveLanguages.com that say:
+          questions in this app are from PDFs from{' '}
+          <Text style={styles.link} onPress={this._openLoveLanguagesSite}>
+            5LoveLanguages.com
+          </Text>{' '}
+          that say:
         </Text>
         <Text style={[styles.text, styles.notice]}>
           This profile is an excerpt from <Text style={styles.bookTitle}>The 5 Love Languages</Text>
@@ -66,7 +70,7 @@ export default class CreditScreen extends React.Component {
           />
         ))}
 
-        <Text style={[styles.text, styles.heading]}>Genuine California software</Text>
+        <Text style={[styles.text, styles.heading]}>Genuine Expo software</Text>
         <Text style={styles.text}>
           This app is free and I hope it brings you and the special people in your life closer
           together ❤️🧡💛💚💙
@@ -74,6 +78,10 @@ export default class CreditScreen extends React.Component {
       </ScrollView>
     );
   }
+
+  _openLoveLanguagesSite = () => {
+    Linking.openURL('http://www.5lovelanguages.com/');
+  };
 }
 
 class IconCredit extends React.PureComponent {
