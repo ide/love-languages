@@ -1,6 +1,6 @@
 import { Constants } from 'expo';
 
-import Quiz from './quiz/Quiz';
+import Quiz from '../quiz/Quiz';
 
 const expoProjectUri = 'https://expo.io/@ide/love-languages';
 

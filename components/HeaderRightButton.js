@@ -1,7 +1,6 @@
 import { DangerZone } from 'expo';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text, ViewPropTypes } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
 import Theme from '../styles/Theme';
 
@@ -10,15 +9,15 @@ const { BorderlessButton } = GestureHandler;
 
 export default class HeaderRightButton extends React.Component {
   static propTypes = {
-    onPress: PropTypes.func,
+    ...BorderlessButton.propTypes,
     textStyle: Text.propTypes.style,
-    style: ViewPropTypes.style,
   };
 
   render() {
+    let { style, textStyle, ...props } = this.props;
     return (
-      <BorderlessButton onPress={this.props.onPress} style={[styles.button, this.props.style]}>
-        <Text numberOfLines={1} style={[styles.buttonText, this.props.textStyle]}>
+      <BorderlessButton {...props} style={[styles.button, style]}>
+        <Text numberOfLines={1} style={[styles.buttonText, textStyle]}>
           {this.props.children}
         </Text>
       </BorderlessButton>

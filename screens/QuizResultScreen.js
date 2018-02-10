@@ -1,18 +1,19 @@
-import { DangerZone } from 'expo';
+import { DangerZone, FileSystem, Permissions, takeSnapshotAsync } from 'expo';
 import invariant from 'invariant';
 import countBy from 'lodash/countBy';
 import maxBy from 'lodash/maxBy';
 import values from 'lodash/values';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Alert, Share, StyleSheet, Text, View, ViewPropTypes } from 'react-native';
+import { CameraRoll, Platform, Share, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
-import Sharing from '../Sharing';
+import HeaderRightButton from '../components/HeaderRightButton';
 import LanguageExplanation from '../components/LanguageExplanation';
 import QuizResultChart from '../components/QuizResultChart';
 import Quiz from '../quiz/Quiz';
-import Actions from '../store/Actions';
+import Prompt from '../stuff/Prompt';
+import Sharing from '../stuff/Sharing';
 import Theme from '../styles/Theme';
 
 const { GestureHandler } = DangerZone;
@@ -28,13 +29,21 @@ class QuizResultScreen extends React.Component {
     results: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   };
 
-  static navigationOptions = {
-    title: `Your Love Language`,
-  };
+  static navigationOptions({ navigation }) {
+    let params = navigation.state.params || {};
+    return {
+      title: `Your Love Language`,
+      headerRight: <HeaderRightButton onPress={params.saveResults}>Save</HeaderRightButton>,
+    };
+  }
 
   state = {
     didShare: false,
   };
+
+  componentDidMount() {
+    this.props.navigation.setParams({ saveResults: this._saveResultsAsync });
+  }
 
   render() {
     let primaryLanguages = this._getPrimaryLanguages();
@@ -44,26 +53,27 @@ class QuizResultScreen extends React.Component {
         alwaysBounceVertical={false}
         contentContainerStyle={styles.contentContainer}
         style={styles.container}>
-        <QuizResultSummary
-          primaryLanguages={primaryLanguages}
-          style={styles.primaryLanguageSummary}
-        />
-
-        {primaryLanguages.map((language, ii) => (
-          <LanguageExplanation
-            key={`language-${language}`}
-            language={language}
-            style={[
-              styles.languageExplanation,
-              ii === primaryLanguages.length - 1 ? styles.lastLanguageExplanation : null,
-            ]}
+        <View ref={this._setResultsView} style={styles.content}>
+          <QuizResultSummary
+            primaryLanguages={primaryLanguages}
+            style={styles.primaryLanguageSummary}
           />
-        ))}
 
-        <Text style={styles.text}>See your scores for the other love languages:</Text>
-        <QuizResultChart results={this.props.results} style={styles.chart} />
+          {primaryLanguages.map((language, ii) => (
+            <LanguageExplanation
+              key={`language-${language}`}
+              language={language}
+              style={[
+                styles.languageExplanation,
+                ii === primaryLanguages.length - 1 ? styles.lastLanguageExplanation : null,
+              ]}
+            />
+          ))}
 
-        <View style={styles.buttons}>
+          <Text style={styles.text}>See your scores for the other love languages:</Text>
+          <QuizResultChart results={this.props.results} style={styles.chart} />
+        </View>
+        <View style={[styles.content, styles.buttons]}>
           <BorderlessButton
             onPress={this._shareQuizAsync}
             style={[styles.button, styles.spacedButton]}>
@@ -77,6 +87,10 @@ class QuizResultScreen extends React.Component {
       </ScrollView>
     );
   }
+
+  _setResultsView = resultsView => {
+    this._resultsView = resultsView;
+  };
 
   _shareQuizAsync = async () => {
     let primaryLanguages = this._getPrimaryLanguages();
@@ -99,7 +113,12 @@ class QuizResultScreen extends React.Component {
 
   _restartAsync = async () => {
     if (!this.state.didShare) {
-      let mayShare = await this._promptToShareAsync();
+      let mayShare = await Prompt.promptAsync(
+        `Share Your Quiz?`,
+        `Would you like to share your quiz results with a loved one or your friends before starting over?`,
+        { acceptText: 'Yes', cancelText: 'Not Now' }
+      );
+
       if (mayShare) {
         await this._shareQuizAsync();
       }
@@ -108,20 +127,6 @@ class QuizResultScreen extends React.Component {
     this._navigateHome();
   };
 
-  _promptToShareAsync() {
-    return new Promise(resolve => {
-      Alert.alert(
-        `Share Your Quiz?`,
-        `Would you like to share your quiz results with a loved one or your friends before starting over?`,
-        [
-          { text: 'Not Now', onPress: () => resolve(false), style: 'cancel' },
-          { text: 'Yes', onPress: () => resolve(true) },
-        ],
-        { onDismiss: () => resolve(false) }
-      );
-    });
-  }
-
   _navigateHome() {
     let subscription = this.props.screenProps.parentNavigation.addListener('didBlur', event => {
       subscription.remove();
@@ -129,6 +134,62 @@ class QuizResultScreen extends React.Component {
     });
     this.props.screenProps.parentNavigation.navigate('Home');
   }
+
+  _saveResultsAsync = async () => {
+    let shouldSave = await Prompt.promptAsync(
+      `Save to Photos?`,
+      `Would you like to save a snapshot of your results to your photos?`,
+      { acceptText: 'Save', cancelText: 'Cancel' }
+    );
+
+    if (!shouldSave) {
+      return;
+    }
+
+    let permissionName = Platform.OS === 'ios' ? 'Photos' : 'Camera';
+    let cameraRollPermissions = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (cameraRollPermissions.status !== 'granted') {
+      await Prompt.alertAsync(
+        `${permissionName} Permission Denied`,
+        `This app needs permission to save a snapshot to your camera roll. Enable the ${permissionName} permission for this app in your phone's settings. In the meantime, try taking a screenshot yourself instead.`,
+        { acceptText: 'OK' }
+      );
+      return;
+    }
+
+    let screenshotUri;
+    try {
+      screenshotUri = await takeSnapshotAsync(this._resultsView, { format: 'png', result: 'file' });
+    } catch (e) {
+      await Prompt.alertAsync(
+        `Couldn't Save Snapshot`,
+        `Something went wrong taking a snapshot of your results. Sorry about that. In the meantime, try taking a screenshot yourself instead.`,
+        { acceptText: 'OK' }
+      );
+      return;
+    }
+
+    try {
+      await CameraRoll.saveToCameraRoll(screenshotUri, 'photo');
+    } catch (e) {
+      await Prompt.alertAsync(
+        `Couldn't Save Snapshot`,
+        `This app needs permission to save a snapshot to your photos. Enable the ${permissionName} permission for this app in your phone's settings. In the meantime, try taking a screenshot yourself instead.`,
+        { acceptText: 'OK' }
+      );
+      return;
+    } finally {
+      await FileSystem.deleteAsync(screenshotUri, { idempotent: true });
+    }
+
+    await Prompt.alertAsync(
+      `Results Saved`,
+      `You can now find a snapshot of your results in your device's photos.`,
+      {
+        acceptText: 'OK',
+      }
+    );
+  };
 
   _getPrimaryLanguages() {
     let maxScore = maxBy(this.props.results, result => result.score).score;
@@ -198,9 +259,10 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    paddingBottom: 32,
+  },
+  content: {
+    backgroundColor: '#fff',
     paddingHorizontal: 24,
-    paddingTop: 20,
   },
   text: {
     color: Theme.darkTextColor,
@@ -209,6 +271,7 @@ const styles = StyleSheet.create({
   },
   primaryLanguageSummary: {
     marginBottom: 28,
+    marginTop: 20,
   },
   languageExplanation: {
     marginBottom: 12,
@@ -222,7 +285,7 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   buttons: {
-    marginBottom: 16,
+    marginBottom: 48,
   },
   button: {
     alignSelf: 'center',
