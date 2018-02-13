@@ -10,7 +10,7 @@ data "aws_region" "current" {}
 
 resource "aws_lambda_function" "image_generator_lambda" {
   function_name = "love-language-image-generator"
-  handler = "function.handler"
+  handler = "src/function.handler"
   runtime = "nodejs6.10"
   filename = "function.zip"
   source_code_hash = "${base64sha256(file("function.zip"))}"
@@ -20,10 +20,14 @@ resource "aws_lambda_function" "image_generator_lambda" {
 
 # Lambda Archiving
 
-data "archive_file" "image_generator_lambda_archive" {
-  type = "zip"
-  source_file = "function.js"
-  output_path = "function.zip"
+resource "null_resource" "lambda_archive" {
+  triggers {
+    always = "${uuid()}"
+  }
+
+  provisioner "local-exec" {
+    command = "rm -f function.zip && zip -r function.zip package.json src node_modules"
+  }
 }
 
 # API Gateway

@@ -1,3 +1,6 @@
+const AWS = require('aws-sdk');
+const gm = require('gm');
+
 exports.handler = function(event, context, callback) {
   callback(null, {
     statusCode: '200',

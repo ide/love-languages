@@ -2,10 +2,13 @@
   "name": "love-languages-server",
   "version": "1.0.0",
   "description": "A Lambda function for the Love Languages server",
-  "main": "function.js",
+  "main": "src/function.js",
   "scripts": {
     "deploy": "terraform apply"
   },
   "author": "James Ide",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "gm": "^1.23.1"
+  }
 }
