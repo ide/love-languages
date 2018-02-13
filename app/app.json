@@ -14,7 +14,11 @@
       "image": "./assets/icons/heart-splash.png"
     },
     "ios": {
+      "bundleIdentifier": "io.expo.lovelanguages",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "io.expo.lovelanguages"
     }
   }
 }
