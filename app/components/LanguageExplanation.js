@@ -6,21 +6,9 @@ import { Image, StyleSheet, Text, View, ViewPropTypes } from 'react-native';
 import Quiz from '../quiz/Quiz';
 import Theme from '../styles/Theme';
 
-const explanations = {
-  [Quiz.Languages
-    .WORDS_OF_AFFIRMATION]: `Hearing a loved one say they love you and appreciate & support you is especially meaningful to you.`,
-  [Quiz.Languages
-    .QUALITY_TIME]: `You especially appreciate spending focused time with a loved one and having their undivided attention.`,
-  [Quiz.Languages
-    .RECEIVING_GIFTS]: `A thoughtful gift a loved one has picked for you is especially meaningful to you.`,
-  [Quiz.Languages
-    .ACTS_OF_SERVICE]: `You especially appreciate when a loved one makes an effort to brighten or ease your day.`,
-  [Quiz.Languages
-    .PHYSICAL_TOUCH]: `Sharing touch with a loved one, even a touch on the arm or a hug, is especially meaningful to you.`,
-};
-
 export default class LanguageExplanation extends React.PureComponent {
   static propTypes = {
+    voice: PropTypes.oneOf(['first-person', 'second-person']).isRequired,
     language: PropTypes.string.isRequired,
     style: ViewPropTypes.style,
   };
@@ -41,9 +29,30 @@ export default class LanguageExplanation extends React.PureComponent {
             },
           ]}
         />
-        <Text style={styles.explanationText}>{explanations[this.props.language]}</Text>
+        <Text style={styles.explanationText}>
+          {_getExplanation(this.props.language, this.props.voice)}
+        </Text>
       </View>
     );
+  }
+}
+
+function _getExplanation(language, voice) {
+  let subjectCapitalized = voice === 'first-person' ? 'I' : 'You';
+  let object = voice === 'first-person' ? 'me' : 'you';
+  let possessive = voice === 'first-person' ? 'my' : 'your';
+
+  switch (language) {
+    case Quiz.Languages.WORDS_OF_AFFIRMATION:
+      return `Hearing a loved one say they love ${object} and appreciate & support ${object} is especially meaningful to ${object}.`;
+    case Quiz.Languages.QUALITY_TIME:
+      return `${subjectCapitalized} especially appreciate spending focused time with a loved one and having their undivided attention.`;
+    case Quiz.Languages.RECEIVING_GIFTS:
+      return `A thoughtful gift a loved one has picked for you is especially meaningful to ${object}.`;
+    case Quiz.Languages.ACTS_OF_SERVICE:
+      return `${subjectCapitalized} especially appreciate when a loved one makes an effort to brighten or ease ${possessive} day.`;
+    case Quiz.Languages.PHYSICAL_TOUCH:
+      return `Sharing touch with a loved one, even a touch on the arm or a hug, is especially meaningful to ${object}.`;
   }
 }
 

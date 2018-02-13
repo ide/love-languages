@@ -9,8 +9,7 @@ import { CameraRoll, Platform, Share, StyleSheet, Text, View } from 'react-nativ
 import { connect } from 'react-redux';
 
 import HeaderRightButton from '../components/HeaderRightButton';
-import LanguageExplanation from '../components/LanguageExplanation';
-import QuizResultChart from '../components/QuizResultChart';
+import QuizResult from '../components/QuizResult';
 import Quiz from '../quiz/Quiz';
 import Prompt from '../stuff/Prompt';
 import Sharing from '../stuff/Sharing';
@@ -46,33 +45,17 @@ class QuizResultScreen extends React.Component {
   }
 
   render() {
-    let primaryLanguages = this._getPrimaryLanguages();
-
     return (
       <ScrollView
         alwaysBounceVertical={false}
         contentContainerStyle={styles.contentContainer}
         style={styles.container}>
-        <View ref={this._setResultsView} style={styles.content}>
-          <QuizResultSummary
-            primaryLanguages={primaryLanguages}
-            style={styles.primaryLanguageSummary}
-          />
-
-          {primaryLanguages.map((language, ii) => (
-            <LanguageExplanation
-              key={`language-${language}`}
-              language={language}
-              style={[
-                styles.languageExplanation,
-                ii === primaryLanguages.length - 1 ? styles.lastLanguageExplanation : null,
-              ]}
-            />
-          ))}
-
-          <Text style={styles.text}>See your scores for the other love languages:</Text>
-          <QuizResultChart results={this.props.results} style={styles.chart} />
-        </View>
+        <QuizResult
+          ref={this._setSavableResultsView}
+          voice="second-person"
+          results={this.props.results}
+          style={styles.content}
+        />
         <View style={[styles.content, styles.buttons]}>
           <BorderlessButton
             disallowInterruption
@@ -89,8 +72,12 @@ class QuizResultScreen extends React.Component {
     );
   }
 
-  _setResultsView = resultsView => {
-    this._resultsView = resultsView;
+  _setSavableResultsView = resultsView => {
+    this._savableResultsView = resultsView;
+  };
+
+  _setShareableResultsView = resultsView => {
+    this._shareableResultsView = resultsView;
   };
 
   _shareQuizAsync = async () => {
@@ -160,7 +147,10 @@ class QuizResultScreen extends React.Component {
 
     let screenshotUri;
     try {
-      screenshotUri = await takeSnapshotAsync(this._resultsView, { format: 'png', result: 'file' });
+      screenshotUri = await takeSnapshotAsync(this._savableResultsView, {
+        format: 'png',
+        result: 'file',
+      });
     } catch (e) {
       await Prompt.alertAsync(
         `Couldn't Save Snapshot`,
@@ -211,48 +201,6 @@ export default connect(state => {
   return { results };
 })(QuizResultScreen);
 
-class QuizResultSummary extends React.PureComponent {
-  static propTypes = {
-    primaryLanguages: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    style: Text.propTypes.style,
-  };
-
-  render() {
-    let { primaryLanguages } = this.props;
-    let message = null;
-
-    if (primaryLanguages.length === 1) {
-      message = (
-        <Text style={[styles.text, this.props.style]}>
-          Your primary love language is {primaryLanguages[0]}!
-        </Text>
-      );
-    } else if (primaryLanguages.length === 2) {
-      message = (
-        <Text style={[styles.text, this.props.style]}>
-          Your primary love languages are {primaryLanguages[0]} and {primaryLanguages[1]}. You're
-          "bilingual"!
-        </Text>
-      );
-    } else if (primaryLanguages.length === 3) {
-      message = (
-        <Text style={[styles.text, this.props.style]}>
-          Your primary love languages are {primaryLanguages[0]}, {primaryLanguages[1]}, and{' '}
-          {primaryLanguages[2]}. You're "trilingual"!
-        </Text>
-      );
-    } else {
-      message = (
-        <Text style={[styles.text, this.props.style]}>
-          Your have many love languages. Many expressions of love are important to you!
-        </Text>
-      );
-    }
-
-    return message;
-  }
-}
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
@@ -269,21 +217,6 @@ const styles = StyleSheet.create({
     color: Theme.darkTextColor,
     fontFamily: 'chasing-hearts',
     fontSize: 24,
-  },
-  primaryLanguageSummary: {
-    marginBottom: 28,
-    marginTop: 20,
-  },
-  languageExplanation: {
-    marginBottom: 12,
-  },
-  lastLanguageExplanation: {
-    marginBottom: 28,
-  },
-  chart: {
-    alignSelf: 'stretch',
-    marginBottom: 32,
-    marginTop: 32,
   },
   buttons: {
     marginBottom: 48,
@@ -304,5 +237,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     minWidth: 180,
     textAlign: 'center',
+  },
+  shareableResults: {
+    paddingHorizontal: 40,
+    paddingVertical: 40,
+    position: 'absolute',
+    width: 1200,
   },
 });

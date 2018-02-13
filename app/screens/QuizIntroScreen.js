@@ -4,6 +4,8 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 
+import Sounds from '../assets/Sounds';
+
 const { GestureHandler } = DangerZone;
 const { BorderlessButton } = GestureHandler;
 
@@ -29,15 +31,16 @@ class QuizIntroScreen extends React.Component {
           meaningful. After answering question #{this.props.numberOfQuestions}, you'll learn how
           much each love language means to you.
         </Text>
-        <BorderlessButton onPress={this._startQuiz} style={styles.startButton}>
+        <BorderlessButton onPress={this._startQuizAsync} style={styles.startButton}>
           <Text style={styles.startButtonText}>Start the Quiz</Text>
         </BorderlessButton>
       </ScrollView>
     );
   }
 
-  _startQuiz = () => {
+  _startQuizAsync = async () => {
     this.props.navigation.navigate('QuizQuestion', { index: 0 });
+    await Sounds.playEffectAsync(Sounds.completion);
   };
 }
 

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 
+import Sounds from './assets/Sounds';
 import HomeNavigator from './navigators/HomeNavigator';
 import Store from './store/Store';
 
@@ -37,6 +38,7 @@ export default class App extends Component {
         athena: require('./assets/athena-of-the-ocean.ttf'),
         'chasing-hearts': require('./assets/chasing-hearts.ttf'),
       }),
+      Sounds.loadAsync(),
     ]);
   };
 }

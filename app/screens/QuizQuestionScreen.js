@@ -5,6 +5,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text, ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 
+import Sounds from '../assets/Sounds';
 import Quiz from '../quiz/Quiz';
 import Actions from '../store/Actions';
 import Theme from '../styles/Theme';
@@ -54,7 +55,7 @@ class QuizQuestionScreen extends React.Component {
             text={choice.text}
             selected={choice === this.props.answer}
             onSelect={() => {
-              this._selectChoice(choice);
+              this._selectChoiceAsync(choice);
             }}
             style={[
               styles.choice,
@@ -66,16 +67,16 @@ class QuizQuestionScreen extends React.Component {
     );
   }
 
-  _selectChoice(choice) {
+  async _selectChoiceAsync(choice) {
     let routeParams = this.props.navigation.state.params;
     let currentQuestionIndex = routeParams.index;
 
     this.props.dispatch(Actions.chooseAnswer(currentQuestionIndex, choice));
 
-    this._navigateToNextScreen();
+    await this._navigateToNextScreenAsync();
   }
 
-  _navigateToNextScreen() {
+  async _navigateToNextScreenAsync() {
     let routeParams = this.props.navigation.state.params;
     let currentQuestionIndex = routeParams.index;
     let nextQuestionIndex = currentQuestionIndex + 1;
@@ -84,8 +85,10 @@ class QuizQuestionScreen extends React.Component {
       this.props.navigation.navigate('QuizQuestion', {
         index: nextQuestionIndex,
       });
+      await Sounds.playEffectAsync(Sounds.buttonPress);
     } else {
       this.props.navigation.navigate('QuizResult');
+      await Sounds.playEffectAsync(Sounds.completion);
     }
   }
 }
