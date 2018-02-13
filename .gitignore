@@ -1,2 +1,8 @@
-/.expo/
-/node_modules/
+*.tfstate
+*.tfstate.backup
+
+.expo/
+.terraform/
+node_modules/
+
+/server/function.zip

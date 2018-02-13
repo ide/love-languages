@@ -1,0 +1,11 @@
+{
+  "name": "love-languages-server",
+  "version": "1.0.0",
+  "description": "A Lambda function for the Love Languages server",
+  "main": "function.js",
+  "scripts": {
+    "deploy": "terraform apply"
+  },
+  "author": "James Ide",
+  "license": "MIT"
+}
