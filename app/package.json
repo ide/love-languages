@@ -9,13 +9,13 @@
     "extends": "universe/native"
   },
   "dependencies": {
-    "expo": "^25.0.0",
+    "expo": "^32.0.0",
     "invariant": "^2.2.2",
     "lodash": "^4.17.5",
     "prop-types": "^15.6.0",
-    "react": "16.2.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
-    "react-navigation": "^1.0.3",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.2.tar.gz",
+    "react-navigation": "^1.1.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2"
   },
