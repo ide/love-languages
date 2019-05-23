@@ -19,6 +19,7 @@
       "assets/icons/*",
       "assets/sounds/*"
     ],
+    "scheme": "lovelanguages",
     "ios": {
       "bundleIdentifier": "io.expo.lovelanguages",
       "supportsTablet": true
