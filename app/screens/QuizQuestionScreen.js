@@ -1,4 +1,4 @@
-import { DangerZone } from 'expo';
+import { GestureHandler } from 'expo';
 import invariant from 'invariant';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,7 +10,6 @@ import Quiz from '../quiz/Quiz';
 import Actions from '../store/Actions';
 import Theme from '../styles/Theme';
 
-const { GestureHandler } = DangerZone;
 const { RectButton } = GestureHandler;
 
 class QuizQuestionScreen extends React.Component {

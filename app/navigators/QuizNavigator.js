@@ -1,18 +1,18 @@
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 
 import QuizIntroScreen from '../screens/QuizIntroScreen';
 import QuizQuestionScreen from '../screens/QuizQuestionScreen';
 import QuizResultScreen from '../screens/QuizResultScreen';
 import Theme from '../styles/Theme';
 
-export default class QuizNavigatorContainer extends React.Component {
-  render() {
-    return <QuizNavigator screenProps={{ parentNavigation: this.props.navigation }} />;
-  }
-}
+// export default class QuizNavigatorContainer extends React.Component {
+//   render() {
+//     return <QuizNavigator navigation={this.props.navigation} screenProps={{ parentNavigation: this.props.navigation }} />;
+//   }
+// }
 
-const QuizNavigator = StackNavigator(
+const QuizNavigator = createStackNavigator(
   {
     QuizIntro: {
       screen: QuizIntroScreen,
@@ -32,9 +32,11 @@ const QuizNavigator = StackNavigator(
   },
   {
     initialRouteName: 'QuizIntro',
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerStyle: { backgroundColor: Theme.primaryColor },
       headerTintColor: Theme.lightTextColor,
     },
   }
 );
+
+export default QuizNavigator;

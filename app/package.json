@@ -15,9 +15,9 @@
     "prop-types": "^15.6.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.2.tar.gz",
-    "react-navigation": "^1.1.0",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2"
+    "react-navigation": "^3.11.0",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "eslint": "^4.17.0",

@@ -1,10 +1,10 @@
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 
 import CreditNavigator from './CreditNavigator';
 import QuizNavigator from './QuizNavigator';
 import HomeScreen from '../screens/HomeScreen';
 
-const HomeNavigator = StackNavigator(
+const HomeNavigator = createStackNavigator(
   {
     Home: {
       screen: HomeScreen,

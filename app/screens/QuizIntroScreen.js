@@ -1,4 +1,4 @@
-import { DangerZone } from 'expo';
+import { GestureHandler } from 'expo';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 
 import Sounds from '../assets/Sounds';
 
-const { GestureHandler } = DangerZone;
 const { BorderlessButton } = GestureHandler;
 
 class QuizIntroScreen extends React.Component {

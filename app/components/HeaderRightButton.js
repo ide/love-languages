@@ -1,10 +1,9 @@
-import { DangerZone } from 'expo';
+import { GestureHandler } from 'expo';
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import Theme from '../styles/Theme';
 
-const { GestureHandler } = DangerZone;
 const { BorderlessButton } = GestureHandler;
 
 export default class HeaderRightButton extends React.Component {

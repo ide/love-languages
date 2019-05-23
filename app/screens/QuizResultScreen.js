@@ -1,4 +1,4 @@
-import { DangerZone, FileSystem, Permissions, takeSnapshotAsync } from 'expo';
+import { FileSystem, GestureHandler, Permissions, takeSnapshotAsync } from 'expo';
 import invariant from 'invariant';
 import countBy from 'lodash/countBy';
 import maxBy from 'lodash/maxBy';
@@ -15,7 +15,6 @@ import Prompt from '../stuff/Prompt';
 import Sharing from '../stuff/Sharing';
 import Theme from '../styles/Theme';
 
-const { GestureHandler } = DangerZone;
 const { BorderlessButton, ScrollView } = GestureHandler;
 
 class QuizResultScreen extends React.Component {

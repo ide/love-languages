@@ -1,11 +1,17 @@
 import { AppLoading, Asset, Font } from 'expo';
 import React, { Component } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
+import { useScreens } from 'react-native-screens';
+import { createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux';
 
 import Sounds from './assets/Sounds';
 import HomeNavigator from './navigators/HomeNavigator';
 import Store from './store/Store';
+
+useScreens();
+
+const NavigationContainer = createAppContainer(HomeNavigator);
 
 export default class App extends Component {
   state = {
@@ -25,7 +31,7 @@ export default class App extends Component {
       <Provider store={Store}>
         <React.Fragment>
           <StatusBar barStyle="light-content" />
-          <HomeNavigator style={styles.container} />
+          <NavigationContainer style={styles.container} />
         </React.Fragment>
       </Provider>
     );
@@ -33,7 +39,9 @@ export default class App extends Component {
 
   _cacheResourcesAsync = async () => {
     await Promise.all([
-      Asset.fromModule(require('react-navigation/src/views/assets/back-icon.png')).downloadAsync(),
+      Asset.fromModule(
+        require('react-navigation-stack/lib/module/views/assets/back-icon.png')
+      ).downloadAsync(),
       Font.loadAsync({
         athena: require('./assets/athena-of-the-ocean.ttf'),
         'chasing-hearts': require('./assets/chasing-hearts.ttf'),
