@@ -43,8 +43,8 @@ export default class App extends Component {
         require('react-navigation-stack/lib/module/views/assets/back-icon.png')
       ).downloadAsync(),
       Font.loadAsync({
-        athena: require('./assets/athena-of-the-ocean.ttf'),
-        'chasing-hearts': require('./assets/chasing-hearts.ttf'),
+        athena: require('./assets/fonts/athena-of-the-ocean.ttf'),
+        'chasing-hearts': require('./assets/fonts/chasing-hearts.ttf'),
       }),
       Sounds.loadAsync(),
     ]);

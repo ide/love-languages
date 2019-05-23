@@ -9,11 +9,16 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "primaryColor": "#9c27b0",
-    "icon": "./assets/icons/heart-app-icon.png",
+    "icon": "./assets/external/heart-app-icon.png",
     "splash": {
       "backgroundColor": "#9c27b0",
-      "image": "./assets/icons/heart-splash.png"
+      "image": "./assets/external/heart-splash.png"
     },
+    "assetBundlePatterns": [
+      "assets/fonts/*",
+      "assets/icons/*",
+      "assets/sounds/*"
+    ],
     "ios": {
       "bundleIdentifier": "io.expo.lovelanguages",
       "supportsTablet": true
